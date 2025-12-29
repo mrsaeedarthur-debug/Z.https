@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دوره کده - آموزش آنلاین مهارت‌های نوین</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vazirmatn/math@latest/Vazirmatn-font.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #ffba08;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .app-name {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary);
+            position: relative;
+            height: 40px;
+            overflow: hidden;
+        }
+        
+        #typing-text {
+            position: absolute;
+            white-space: nowrap;
+        }
+        
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 30px;
+            background-color: var(--accent);
+            margin-right: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .container {
+            padding: 10px 0;
+        }
+        
+        .category {
+            margin-bottom: 35px;
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            padding-bottom: 8px;
+            border-bottom: 2px dashed var(--success);
+        }
+        
+        .courses-container {
+            display: flex;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            gap: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) #e0e0e0;
+        }
+        
+        .courses-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .courses-container::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        
+        .courses-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 10px;
+        }
+        
+        .course-card {
+            flex: 0 0 280px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(67, 97, 238, 0.15);
+        }
+        
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            min-height: 55px;
+        }
+        
+        .course-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .course-duration, .course-students {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .start-course-btn {
+            background: linear-gradient(to left, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 0;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 15px;
+            margin-top: 5px;
+        }
+        
+        .start-course-btn:hover {
+            background: linear-gradient(to left, var(--secondary), var(--primary));
+            transform: scale(1.02);
+        }
+        
+        /* صفحه جزئیات دوره */
+        .course-detail-page {
+            display: none;
+            padding: 20px 0 40px;
+        }
+        
+        .back-btn {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .course-header {
+            background: linear-gradient(135deg, var(--primary), #7209b7);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .course-header h2 {
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+        
+        .course-header p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 800px;
+        }
+        
+        .faq-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        .faq-title {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .faq-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        
+        .faq-question {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .faq-answer {
+            color: #555;
+            font-size: 14px;
+            padding-right: 25px;
+        }
+        
+        .start-learning-btn {
+            background: linear-gradient(to left, #f72585, #b5179e);
+            color: white;
+            border: none;
+            padding: 16px 0;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 17px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .start-learning-btn:hover {
+            background: linear-gradient(to left, #b5179e, #f72585);
+            transform: scale(1.02);
+        }
+        
+        /* صفحه درس‌ها */
+        .lessons-page {
+            display: none;
+            padding: 20px 0 40px;
+        }
+        
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .lesson-title {
+            color: var(--secondary);
+            font-size: 24px;
+        }
+        
+        .lesson-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        .lesson-content {
+            line-height: 1.8;
+        }
+        
+        .lesson-content h3 {
+            color: var(--primary);
+            margin: 20px 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            padding-right: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .lesson-content li {
+            margin-bottom: 8px;
+        }
+        
+        .lesson-image {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            margin: 15px auto;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .code-block {
+            background-color: #f8f9fa;
+            border-right: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .prev-btn {
+            background-color: #f0f0f0;
+            color: var(--dark);
+        }
+        
+        .next-btn {
+            background: linear-gradient(to left, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .lock-message {
+            background: linear-gradient(135deg, #ffba08, #faa307);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+        }
+        
+        .lock-message h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .lock-message p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .purchase-btn {
+            background: linear-gradient(to left, #f72585, #b5179e);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 17px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .purchase-btn:hover {
+            background: linear-gradient(to left, #b5179e, #f72585);
+            transform: scale(1.05);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .lesson-counter {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .language-example {
+            background-color: #e9f7ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-right: 4px solid var(--success);
+        }
+        
+        .persian-translation {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        .pronunciation {
+            color: #666;
+            font-style: italic;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .course-card {
+                flex: 0 0 250px;
+            }
+            
+            .course-header h2 {
+                font-size: 22px;
+            }
+            
+            .lesson-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- هدر با انیمیشن تایپ -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">د</div>
+            <div class="app-name">
+                <span id="typing-text"></span><span class="typing-cursor"></span>
+            </div>
+        </div>
+        <div class="tagline">یادگیری مهارت‌های آینده، امروز!</div>
+    </header>
+    
+    <!-- صفحه اصلی با دسته‌بندی دوره‌ها -->
+    <main class="container" id="main-page">
+        <!-- دسته فناوری و برنامه‌نویسی -->
+        <section class="category">
+            <h2 class="category-title"><i class="fas fa-laptop-code"></i> 💻 فناوری و برنامه‌نویسی</h2>
+            <div class="courses-container">
+                <!-- دوره‌های این دسته به صورت داینامیک توسط جاوااسکریپت اضافه می‌شوند -->
+            </div>
+        </section>
+        
+        <!-- دسته کسب‌وکار و بازاریابی -->
+        <section class="category">
+            <h2 class="category-title"><i class="fas fa-chart-line"></i> 📈 کسب‌وکار و بازاریابی</h2>
+            <div class="courses-container">
+                <!-- دوره‌های این دسته -->
+            </div>
+        </section>
+        
+        <!-- دسته بازارهای مالی -->
+        <section class="category">
+            <h2 class="category-title"><i class="fas fa-coins"></i> 💵 بازارهای مالی</h2>
+            <div class="courses-container">
+                <!-- دوره‌های این دسته -->
+            </div>
+        </section>
+        
+        <!-- دسته زبان‌های خارجی -->
+        <section class="category">
+            <h2 class="category-title"><i class="fas fa-globe"></i> 🌍 زبان‌های خارجی</h2>
+            <div class="courses-container">
+                <!-- دوره‌های این دسته -->
+            </div>
+        </section>
+        
+        <!-- دسته توسعه فردی -->
+        <section class="category">
+            <h2 class="category-title"><i class="fas fa-brain"></i> 🧠 توسعه فردی و مهارت‌های نرم</h2>
+            <div class="courses-container">
+                <!-- دوره‌های این دسته -->
+            </div>
+        </section>
+    </main>
+    
+    <!-- صفحه جزئیات دوره -->
+    <section class="course-detail-page" id="course-detail-page">
+        <button class="back-btn" id="back-to-main"><i class="fas fa-arrow-right"></i> بازگشت به دوره‌ها</button>
+        
+        <div class="course-header">
+            <h2 id="detail-course-title">آموزش برنامه‌نویسی پایتون</h2>
+            <p id="detail-course-description">دوره جامع آموزش پایتون از صفر تا صد</p>
+        </div>
+        
+        <div class="faq-section">
+            <h3 class="faq-title"><i class="fas fa-question-circle"></i> سوالات متداول</h3>
+            <div id="faq-content">
+                <!-- سوالات متداول به صورت داینامیک اضافه می‌شوند -->
+            </div>
+        </div>
+        
+        <button class="start-learning-btn" id="start-learning-btn">
+            <i class="fas fa-play-circle"></i> شروع کنید
+        </button>
+    </section>
+    
+    <!-- صفحه درس‌ها -->
+    <section class="lessons-page" id="lessons-page">
+        <div class="lesson-header">
+            <button class="back-btn" id="back-to-detail"><i class="fas fa-arrow-right"></i> بازگشت به توضیحات دوره</button>
+            <div class="lesson-counter" id="lesson-counter">درس 1 از 3</div>
+        </div>
+        
+        <h2 class="lesson-title" id="lesson-title">مقدمه و نصب پایتون</h2>
+        
+        <div class="lesson-container">
+            <div class="lesson-content" id="lesson-content">
+                <!-- محتوای درس به صورت داینامیک اضافه می‌شود -->
+            </div>
+            
+            <div class="lesson-navigation">
+                <button class="nav-btn prev-btn" id="prev-lesson"><i class="fas fa-arrow-right"></i> درس قبلی</button>
+                <button class="nav-btn next-btn" id="next-lesson">درس بعدی <i class="fas fa-arrow-left"></i></button>
+            </div>
+        </div>
+        
+        <div class="lock-message" id="lock-message">
+            <h3><i class="fas fa-lock"></i> ادامه این دوره قفل شده است</h3>
+            <p>برای دسترسی به درس‌های بیشتر و تکمیل این دوره، لطفاً از طریق دکمه زیر اقدام به خرید نمایید.</p>
+            <p>با خرید این دوره به تمامی محتوای آموزشی (شامل ۱۲ درس کامل)، فایل‌های تمرینی، پشتیبانی مستقیم و مدرک پایان دوره دسترسی خواهید داشت.</p>
+            <a href="https://wa.me/+989302739289" target="_blank" class="purchase-btn">
+                <i class="fab fa-whatsapp"></i> خرید دوره از طریق واتس‌اپ
+            </a>
+        </div>
+    </section>
+    
+    <footer>
+        <p>© ۲۰۲۳ دوره کده - تمامی حقوق محفوظ است.</p>
+        <p>شماره پشتیبانی: ۰۹۳۰۲۷۳۹۲۸۹</p>
+    </footer>
+    
+    <script>
+        // داده‌های دوره‌ها
+        const coursesData = {
+            "technology": [
+                {
+                    id: "python-course",
+                    title: "آموزش برنامه‌نویسی پایتون (از مقدماتی تا پیشرفته)",
+                    description: "یادگیری پایتون، زبان قدرتمند و همه‌کاره برنامه‌نویسی که در حوزه‌های مختلف از هوش مصنوعی تا توسعه وب کاربرد دارد.",
+                    duration: "20 ساعت",
+                    students: "۱۲۴۵",
+                    category: "technology",
+                    faqs: [
+                        {
+                            question: "آیا این دوره برای افراد کاملاً مبتدی مناسب است؟",
+                            answer: "بله! این دوره از مفاهیم پایه‌ای شروع می‌شود و قدم به قدم شما را تا سطح پیشرفته هدایت می‌کند."
+                        },
+                        {
+                            question: "پس از اتمام دوره چه مهارت‌هایی کسب می‌کنم؟",
+                            answer: "شما قادر خواهید بود پروژه‌های واقعی پایتون ایجاد کنید، با کتابخانه‌های معروف کار کنید و حتی در حوزه‌هایی مانند数据分析 و اتوماسیون فعالیت کنید."
+                        },
+                        {
+                            question: "آیا برای این دوره پیش‌نیاز خاصی لازم است؟",
+                            answer: "خیر، فقط علاقه به یادگیری و یک کامپیوتر با دسترسی به اینترنت کافی است."
+                        }
+                    ],
+                    lessons: [
+                        {
+                            title: "مقدمه و نصب پایتون",
+                            content: `
+                                <h3>چرا پایتون؟</h3>
+                                <p>پایتون یکی از محبوب‌ترین زبان‌های برنامه‌نویسی دنیاست که به خاطر سادگی، خوانایی و کاربردهای گسترده‌اش شناخته می‌شود. از توسعه وب گرفته تا هوش مصنوعی، تحلیل داده و اتوماسیون، پایتون در همه‌جا حضور دارد!</p>
+                                
+                                <h3>نصب پایتون</h3>
+                                <p>برای شروع، باید پایتون را روی سیستم خود نصب کنید. به سایت رسمی پایتون بروید (python.org) و آخرین نسخه را دانلود کنید.</p>
+                                
+                                <div class="code-block">
+                                    # این یک کد ساده پایتون است<br>
+                                    print("سلام دنیا!")<br>
+                                    print("خوش آمدید به دوره پایتون")
+                                </div>
+                                
+                                <p>بعد از نصب، ترمینال یا CMD را باز کنید و دستور زیر را وارد کنید تا از نصب صحیح مطمئن شوید:</p>
+                                
+                                <div class="code-block">
+                                    python --version
+                                </div>
+                                
+                                <h3>اولین برنامه شما</h3>
+                                <p>حالا یک ویرایشگر کد مثل VS Code نصب کنید و اولین برنامه پایتون خود را بنویسید:</p>
+                                
+                                <div class="code-block">
+                                    # برنامه خوش آمدگویی<br>
+                                    name = input("نام شما چیست؟ ")<br>
+                                    print(f"سلام {name}! به دنیای پایتون خوش آمدید.")
+                                </div>
+                                
+                                <p>تبریک می‌گویم! شما اولین قدم را در مسیر برنامه‌نویسی پایتون برداشتید. در درس بعدی با متغیرها و انواع داده‌ها آشنا می‌شویم.</p>
+                            `
+                        },
+                        {
+                            title: "متغیرها و انواع داده‌ها",
+                            content: `
+                                <h3>متغیرها چیستند؟</h3>
+                                <p>متغیرها مانند جعبه‌هایی هستند که اطلاعات را در خود نگه می‌دارند. در پایتون، ایجاد متغیر بسیار ساده است:</p>
+                                
+                                <div class="code-block">
+                                    # ایجاد متغیرها<br>
+                                    name = "علی"<br>
+                                    age = 25<br>
+                                    height = 1.75<br>
+                                    is_student = True
+                                </div>
+                                
+                                <h3>انواع داده‌های اصلی</h3>
+                                <ul>
+                                    <li><strong>رشته (String)</strong>: برای متن‌ها استفاده می‌شود - "سلام"</li>
+                                    <li><strong>عدد صحیح (Integer)</strong>: برای اعداد کامل - ۱۰، ۲۰، -۵</li>
+                                    <li><strong>عدد اعشاری (Float)</strong>: برای اعداد اعشاری - ۳.۱۴، ۲.۵</li>
+                                    <li><strong>بولین (Boolean)</strong>: برای مقادیر درست/غلط - True یا False</li>
+                                    <li><strong>لیست (List)</strong>: برای مجموعه‌ای از مقادیر - [۱, ۲, ۳]</li>
+                                </ul>
+                                
+                                <h3>عملگرهای ریاضی</h3>
+                                <p>با متغیرها می‌توانیم عملیات ریاضی انجام دهیم:</p>
+                                
+                                <div class="code-block">
+                                    x = 10<br>
+                                    y = 3<br>
+                                    <br>
+                                    جمع = x + y  # 13<br>
+                                    تفریق = x - y  # 7<br>
+                                    ضرب = x * y  # 30<br>
+                                    تقسیم = x / y  # 3.333<br>
+                                    باقیمانده = x % y  # 1
+                                </div>
+                                
+                                <p>در درس بعدی با ساختارهای کنترلی مانند شرط‌ها و حلقه‌ها آشنا می‌شویم که مغز برنامه‌های شما خواهند بود!</p>
+                            `
+                        },
+                        {
+                            title: "ساختارهای کنترلی",
+                            content: `
+                                <h3>شرط if</h3>
+                                <p>گاهی می‌خواهیم کدهایمان فقط در شرایط خاصی اجرا شوند. اینجاست که شرط if به کمک ما می‌آید:</p>
+                                
+                                <div class="code-block">
+                                    age = 18<br>
+                                    <br>
+                                    if age >= 18:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;print("شما بزرگسال هستید.")<br>
+                                    else:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;print("شما خردسال هستید.")
+                                </div>
+                                
+                                <h3>حلقه for</h3>
+                                <p>وقتی می‌خواهیم عملیاتی را چندین بار تکرار کنیم، از حلقه for استفاده می‌کنیم:</p>
+                                
+                                <div class="code-block">
+                                    # چاپ اعداد ۱ تا ۵<br>
+                                    for i in range(1, 6):<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;print(i)<br>
+                                    <br>
+                                    # پیمایش یک لیست<br>
+                                    fruits = ["سیب", "موز", "پرتقال"]<br>
+                                    for fruit in fruits:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;print(f"میوه: {fruit}")
+                                </div>
+                                
+                                <h3>حلقه while</h3>
+                                <p>حلقه while تا زمانی که شرط خاصی برقرار است، ادامه می‌یابد:</p>
+                                
+                                <div class="code-block">
+                                    count = 0<br>
+                                    while count < 5:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;print(f"شمارش: {count}")<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;count += 1
+                                </div>
+                                
+                                <p>با این سه درس، شما اصول پایه پایتون را یاد گرفتید. برای ادامه‌ی مسیر و یادگیری مباحث پیشرفته‌تر مانند توابع، کلاس‌ها، کار با فایل‌ها و کتابخانه‌های معروف پایتون، دوره را خریداری کنید.</p>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "web-dev-course",
+                    title: "توسعه وب (HTML, CSS, JavaScript, React)",
+                    description: "یادگیری ساخت وبسایت‌های مدرن و واکنش‌گرا از صفر تا صد با جدیدترین تکنولوژی‌های وب.",
+                    duration: "25 ساعت",
+                    students: "۱۸۷۶",
+                    category: "technology"
+                },
+                {
+                    id: "ai-ml-course",
+                    title: "هوش مصنوعی و یادگیری ماشین",
+                    description: "ورود به دنیای جذاب هوش مصنوعی، یادگیری ماشین و داده‌کاوی با پروژه‌های عملی و کاربردی.",
+                    duration: "30 ساعت",
+                    students: "۹۳۲",
+                    category: "technology"
+                },
+                {
+                    id: "mobile-dev-course",
+                    title: "ساخت اپلیکیشن موبایل (Android و iOS)",
+                    description: "یادگیری ساخت اپلیکیشن‌های موبایل برای پلتفرم‌های Android و iOS با React Native.",
+                    duration: "22 ساعت",
+                    students: "۱۱۰۵",
+                    category: "technology"
+                },
+                {
+                    id: "cybersecurity-course",
+                    title: "امنیت سایبری و هک اخلاقی",
+                    description: "آموزش مفاهیم امنیت سایبری، تست نفوذ و هک اخلاقی برای حفاظت از سیستم‌ها و شبکه‌ها.",
+                    duration: "28 ساعت",
+                    students: "۸۴۳",
+                    category: "technology"
+                }
+            ],
+            "business": [
+                {
+                    id: "digital-marketing-course",
+                    title: "دیجیتال مارکتینگ (SEO، تبلیغات گوگل، شبکه‌های اجتماعی)",
+                    description: "تبدیل شدن به یک متخصص دیجیتال مارکتینگ با یادگیری SEO، تبلیغات گوگل و مدیریت شبکه‌های اجتماعی.",
+                    duration: "18 ساعت",
+                    students: "۲۱۰۷",
+                    category: "business"
+                },
+                {
+                    id: "mba-course",
+                    title: "مدیریت کسب‌وکار و MBA فشرده",
+                    description: "دوره فشرده مدیریت کسب‌وکار با مهم‌ترین مفاهیم MBA برای رشد و توسعه کسب‌وکار شما.",
+                    duration: "24 ساعت",
+                    students: "۱۳۲۴",
+                    category: "business"
+                },
+                {
+                    id: "sales-course",
+                    title: "فروش و مذاکره حرفه‌ای",
+                    description: "یادگیری اصول فروش حرفه‌ای، تکنیک‌های مذاکره و ارتباط موثر برای افزایش درآمد.",
+                    duration: "15 ساعت",
+                    students: "۱۷۶۵",
+                    category: "business"
+                },
+                {
+                    id: "branding-course",
+                    title: "برندسازی شخصی و سازمانی",
+                    description: "ساخت برند شخصی قدرتمند یا توسعه برند سازمانی برای ایجاد تمایز در بازار رقابتی.",
+                    duration: "16 ساعت",
+                    students: "۹۸۷",
+                    category: "business"
+                },
+                {
+                    id: "ai-income-course",
+                    title: "کسب درآمد از هوش مصنوعی (ChatGPT, Jasper, MidJourney)",
+                    description: "یادگیری استفاده از ابزارهای هوش مصنوعی برای ایجاد درآمد و خودکارسازی فرآیندهای کسب‌وکار.",
+                    duration: "14 ساعت",
+                    students: "۲۵۴۳",
+                    category: "business"
+                }
+            ],
+            "finance": [
+                {
+                    id: "stock-market-course",
+                    title: "بورس و تحلیل تکنیکال",
+                    description: "یادگیری اصول سرمایه‌گذاری در بورس، تحلیل تکنیکال و شناسایی سهام سودآور.",
+                    duration: "20 ساعت",
+                    students: "۱۸۹۰",
+                    category: "finance"
+                },
+                {
+                    id: "crypto-course",
+                    title: "کریپتوکارنسی و بلاکچین",
+                    description: "ورود به دنیای رمزارزها، بلاکچین و فناوری‌های مالی نوین با آموزش عملی.",
+                    duration: "22 ساعت",
+                    students: "۲۲۴۵",
+                    category: "finance"
+                },
+                {
+                    id: "forex-course",
+                    title: "فارکس و معاملات بین‌المللی",
+                    description: "یادگیری معامله در بازار فارکس، تحلیل جفت ارزها و مدیریت ریسک.",
+                    duration: "18 ساعت",
+                    students: "۱۱۵۶",
+                    category: "finance"
+                },
+                {
+                    id: "investment-course",
+                    title: "مدیریت سرمایه‌گذاری و مدیریت ریسک",
+                    description: "آموزش اصول مدیریت سرمایه، تنوع‌بخشی و مدیریت ریسک برای سرمایه‌گذاری موفق.",
+                    duration: "16 ساعت",
+                    students: "۱۳۴۲",
+                    category: "finance"
+                }
+            ],
+            "language": [
+                {
+                    id: "english-course",
+                    title: "انگلیسی کاربردی (مکالمه، آیلتس، تافل)",
+                    description: "یادگیری زبان انگلیسی از پایه تا پیشرفته با تمرکز بر مکالمه، آمادگی آزمون‌های آیلتس و تافل.",
+                    duration: "40 ساعت",
+                    students: "۳۱۲۰",
+                    category: "language",
+                    lessons: [
+                        {
+                            title: "مقدمه و الفبای انگلیسی",
+                            content: `
+                                <h3>چرا انگلیسی یاد بگیریم؟</h3>
+                                <p>زبان انگلیسی دروازه‌ای به دنیای فرصت‌های جدید است! از سفر گرفته تا تحصیل در بهترین دانشگاه‌های جهان، کار در شرکت‌های بین‌المللی و دسترسی به اطلاعات روز دنیا، همه با یادگیری انگلیسی ممکن می‌شود.</p>
+                                
+                                <h3>الفبای انگلیسی</h3>
+                                <p>الفبای انگلیسی ۲۶ حرف دارد که به دو دسته بزرگ (Capital) و کوچک (Small) تقسیم می‌شوند:</p>
+                                
+                                <div class="language-example">
+                                    <p><strong>حروف بزرگ:</strong> A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z</p>
+                                    <p><strong>حروف کوچک:</strong> a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z</p>
+                                    <div class="persian-translation">تلفظ فارسی: ای، بی، سی، دی، ای، اف، جی، اِچ، آی، جِی، کِی، اِل، اِم، اِن، اُ، پی، کیو، آر، اِس، تی، یو، وی، دَبلیو، اکس، وای، زِد</div>
+                                </div>
+                                
+                                <h3>اولین جملات انگلیسی</h3>
+                                <p>بیایید با چند جمله ساده شروع کنیم:</p>
+                                
+                                <div class="language-example">
+                                    <p><strong>Hello!</strong></p>
+                                    <div class="persian-translation">معنی: سلام!</div>
+                                    <div class="pronunciation">تلفظ: هِلُو</div>
+                                </div>
+                                
+                                <div class="language-example">
+                                    <p><strong>How are you?</strong></p>
+                                    <div class="persian-translation">معنی: حالت چطوره؟ / چطور هستید؟</div>
+                                    <div class="pronunciation">تلفظ: هاو آر یو</div>
+                                </div>
+                                
+                                <div class="language-example">
+                                    <p><strong>I am fine, thank you.</strong></p>
+                                    <div class="persian-translation">معنی: من خوبم، ممنون.</div>
+                                    <div class="pronunciation">تلفظ: آی اَم فاین، ثَنک یو</div>
+                                </div>
+                                
+                                <p>در درس بعدی با اعداد، رنگ‌ها و کلمات پرکاربرد روزمره آشنا می‌شویم. به یاد داشته باشید: تمرین روزانه کلید موفقیت در یادگیری زبان است!</p>
+                            `
+                        },
+                        {
+                            title: "اعداد، رنگ‌ها و کلمات پرکاربرد",
+                            content: `
+                                <h3>اعداد انگلیسی (۱-۲۰)</h3>
+                                <p>یادگیری اعداد اولین قدم برای صحبت درباره سن، قیمت، شماره تلفن و بسیاری چیزهای دیگر است:</p>
+                                
+                                <div class="language-example">
+                                    <p>1 - one (وان)، 2 - two (تو)، 3 - three (ثری)، 4 - four (فور)، 5 - five (فایو)</p>
+                                    <p>6 - six (سیکس)، 7 - seven (سِوِن)، 8 - eight (اِیت)، 9 - nine (ناین)، 10 - ten (تِن)</p>
+                                    <p>11 - eleven (الِوِن)، 12 - twelve (تِوِلو)، 13 - thirteen (ثِرتین)، 14 - fourteen (فورتين)، 15 - fifteen (فيفتين)</p>
+                                    <p>16 - sixteen (سيکستين)، 17 - seventeen (سِونتين)، 18 - eighteen (اِيتين)، 19 - nineteen (ناین‌تین)، 20 - twenty (تِوِنی)</p>
+                                </div>
+                                
+                                <h3>رنگ‌های اصلی</h3>
+                                <p>رنگ‌ها بخش مهمی از توصیف دنیای اطراف ما هستند:</p>
+                                
+                                <div class="language-example">
+                                    <p><span style="color:red">● Red</span> (رِد) - قرمز</p>
+                                    <p><span style="color:blue">● Blue</span> (بلو) - آبی</p>
+                                    <p><span style="color:green">● Green</span> (گرین) - سبز</p>
+                                    <p><span style="color:yellow">● Yellow</span> (یِلُو) - زرد</p>
+                                    <p><span style="color:black">● Black</span> (بِلَک) - مشکی</p>
+                                    <p><span style="color:white;background-color:#333;padding:2px 5px">● White</span> (وایت) - سفید</p>
+                                </div>
+                                
+                                <h3>کلمات پرکاربرد روزمره</h3>
+                                <p>این کلمات را هر روز استفاده می‌کنیم:</p>
+                                
+                                <div class="language-example">
+                                    <p><strong>Water</strong> (واتِر) - آب</p>
+                                    <p><strong>Food</strong> (فود) - غذا</p>
+                                    <p><strong>House</strong> (هاوس) - خانه</p>
+                                    <p><strong>Family</strong> (فَمیلی) - خانواده</p>
+                                    <p><strong>Friend</strong> (فرِند) - دوست</p>
+                                    <p><strong>Time</strong> (تایم) - زمان</p>
+                                </div>
+                                
+                                <h3>جمله سازی ساده</h3>
+                                <p>حالا با کلماتی که یاد گرفتیم، می‌توانیم جمله بسازیم:</p>
+                                
+                                <div class="language-example">
+                                    <p><strong>I have two friends.</strong></p>
+                                    <div class="persian-translation">معنی: من دو تا دوست دارم.</div>
+                                    <div class="pronunciation">تلفظ: آی هَو تو فرندز</div>
+                                </div>
+                                
+                                <div class="language-example">
+                                    <p><strong>The house is blue.</strong></p>
+                                    <div class="persian-translation">معنی: خانه آبی است.</div>
+                                    <div class="pronunciation">تلفظ: دَ هاوس ایز بلو</div>
+                                </div>
+                                
+                                <p>در درس بعدی با گرامر پایه، ساختار جملات و زمان‌های ساده آشنا می‌شویم. ادامه دهید، شما عالی پیش می‌روید!</p>
+                            `
+                        },
+                        {
+                            title: "گرامر پایه و ساختار جملات",
+                            content: `
+                                <h3>فاعل، فعل، مفعول</h3>
+                                <p>ساختار پایه جمله انگلیسی معمولاً به این صورت است: <strong>فاعل + فعل + مفعول</strong></p>
+                                
+                                <div class="language-example">
+                                    <p><strong>I eat an apple.</strong></p>
+                                    <div class="persian-translation">من یک سیب می‌خورم.</div>
+                                    <p>فاعل: I (من) | فعل: eat (می‌خورم) | مفعول: an apple (یک سیب)</p>
+                                </div>
+                                
+                                <h3>فعل to be (بودن)</h3>
+                                <p>این فعل پرکاربردترین فعل انگلیسی است و با فاعل تغییر می‌کند:</p>
+                                
+                                <div class="language-example">
+                                    <p><strong>I am</strong> a student. (من دانش‌آموز هستم.)</p>
+                                    <p><strong>You are</strong> a teacher. (تو معلم هستی.)</p>
+                                    <p><strong>He/She/It is</strong> here. (او/آن اینجاست.)</p>
+                                    <p><strong>We are</strong> friends. (ما دوست هستیم.)</p>
+                                    <p><strong>They are</strong> happy. (آنها خوشحال هستند.)</p>
+                                </div>
+                                
+                                <h3>سوالی کردن جملات</h3>
+                                <p>برای سوالی کردن جملات با فعل to be، جای فاعل و فعل را عوض می‌کنیم:</p>
+                                
+                                <div class="language-example">
+                                    <p>جمله خبری: <strong>You are a doctor.</strong> (تو دکتر هستی.)</p>
+                                    <p>جمله سوالی: <strong>Are you a doctor?</strong> (آیا تو دکتر هستی؟)</p>
+                                </div>
+                                
+                                <h3>منفی کردن جملات</h3>
+                                <p>برای منفی کردن، بعد از فعل to be کلمه not می‌آوریم:</p>
+                                
+                                <div class="language-example">
+                                    <p>جمله مثبت: <strong>I am a student.</strong> (من دانش‌آموز هستم.)</p>
+                                    <p>جمله منفی: <strong>I am not a student.</strong> (من دانش‌آموز نیستم.)</p>
+                                </div>
+                                
+                                <h3>ساختار Have/Has (داشتن)</h3>
+                                <p>برای بیان مالکیت از have/has استفاده می‌کنیم:</p>
+                                
+                                <div class="language-example">
+                                    <p><strong>I have</strong> a book. (من یک کتاب دارم.)</p>
+                                    <p><strong>You have</strong> a car. (تو یک ماشین داری.)</p>
+                                    <p><strong>He/She/It has</strong> a cat. (او/آن یک گربه دارد.)</p>
+                                    <p><strong>We have</strong> a house. (ما یک خانه داریم.)</p>
+                                    <p><strong>They have</strong> two children. (آنها دو فرزند دارند.)</p>
+                                </div>
+                                
+                                <p>تبریک! شما اصول اولیه گرامر انگلیسی را یاد گرفتید. برای ادامه مسیر و یادگیری زمان‌های مختلف، جملات مرکب، مکالمه پیشرفته و آمادگی برای آزمون‌های بین‌المللی، دوره کامل را خریداری کنید.</p>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "german-course",
+                    title: "آلمانی و فرانسه برای مهاجرت و کار",
+                    description: "یادگیری زبان آلمانی یا فرانسه با هدف مهاجرت کاری، تحصیلی و زندگی در کشورهای اروپایی.",
+                    duration: "35 ساعت",
+                    students: "۸۷۶",
+                    category: "language"
+                },
+                {
+                    id: "turkish-course",
+                    title: "زبان ترکی استانبولی",
+                    description: "یادگیری زبان ترکی استانبولی برای سفر، کار، تحصیل و زندگی در ترکیه.",
+                    duration: "25 ساعت",
+                    students: "۱۵۴۳",
+                    category: "language"
+                }
+            ],
+            "personal": [
+                {
+                    id: "ai-productivity-course",
+                    title: "افزایش بهره‌وری شخصی با ابزارهای AI",
+                    description: "استفاده از هوش مصنوعی برای مدیریت زمان، خودکارسازی کارها و افزایش چندبرابری بهره‌وری.",
+                    duration: "12 ساعت",
+                    students: "۲۹۸۷",
+                    category: "personal"
+                },
+                {
+                    id: "time-management-course",
+                    title: "مدیریت زمان و عادات موفقیت",
+                    description: "یادگیری تکنیک‌های مدیریت زمان و ساخت عادات مثبت برای رسیدن به اهداف شخصی و شغلی.",
+                    duration: "15 ساعت",
+                    students: "۱۸۹۰",
+                    category: "personal"
+                },
+                {
+                    id: "public-speaking-course",
+                    title: "فن بیان و سخنرانی حرفه‌ای",
+                    description: "تقویت مهارت‌های سخنرانی، ارائه مطلب و فن بیان برای تأثیرگذاری بیشتر در جمع.",
+                    duration: "18 ساعت",
+                    students: "۱۳۴۵",
+                    category: "personal"
+                },
+                {
+                    id: "leadership-course",
+                    title: "رهبری و مدیریت تیم",
+                    description: "یادگیری اصول رهبری مؤثر، مدیریت تیم و انگیزه‌بخشی به کارکنان برای موفقیت سازمانی.",
+                    duration: "20 ساعت",
+                    students: "۱۰۹۸",
+                    category: "personal"
+                },
+                {
+                    id: "problem-solving-course",
+                    title: "حل مسئله و خلاقیت",
+                    description: "تقویت مهارت حل مسئله، تفکر خلاق و تصمیم‌گیری مؤثر در موقعیت‌های پیچیده.",
+                    duration: "16 ساعت",
+                    students: "۱۲۳۴",
+                    category: "personal"
+                }
+            ]
+        };
+
+        // انیمیشن تایپ در هدر
+        const typingText = document.getElementById('typing-text');
+        const texts = ["دوره کده", "آموزش آنلاین", "مهارت‌های آینده"];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 100;
+        let pauseTime = 1500;
+
+        function typeWriter() {
+            const currentText = texts[textIndex];
+            
+            if (isDeleting) {
+                typingText.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+                typingSpeed = 50;
+            } else {
+                typingText.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+                typingSpeed = 100;
+            }
+            
+            if (!isDeleting && charIndex === currentText.length) {
+                typingSpeed = pauseTime;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+                typingSpeed = 500;
+            }
+            
+            setTimeout(typeWriter, typingSpeed);
+        }
+
+        // شروع انیمیشن تایپ بعد از لود صفحه
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(typeWriter, 1000);
+            
+            // ایجاد کارت‌های دوره
+            createCourseCards();
+            
+            // رویدادهای دکمه‌ها
+            document.getElementById('back-to-main').addEventListener('click', showMainPage);
+            document.getElementById('back-to-detail').addEventListener('click', showCourseDetailPage);
+            document.getElementById('start-learning-btn').addEventListener('click', startCourseLessons);
+            document.getElementById('prev-lesson').addEventListener('click', showPrevLesson);
+            document.getElementById('next-lesson').addEventListener('click', showNextLesson);
+        });
+
+        // ایجاد کارت‌های دوره در صفحه اصلی
+        function createCourseCards() {
+            const categories = {
+                technology: document.querySelectorAll('.courses-container')[0],
+                business: document.querySelectorAll('.courses-container')[1],
+                finance: document.querySelectorAll('.courses-container')[2],
+                language: document.querySelectorAll('.courses-container')[3],
+                personal: document.querySelectorAll('.courses-container')[4]
+            };
+
+            // برای هر دسته‌بندی
+            for (const category in coursesData) {
+                coursesData[category].forEach(course => {
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'course-card';
+                    courseCard.innerHTML = `
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-description">${course.description}</p>
+                        <div class="course-meta">
+                            <div class="course-duration"><i class="far fa-clock"></i> ${course.duration}</div>
+                            <div class="course-students"><i class="far fa-user"></i> ${course.students} دانشجو</div>
+                        </div>
+                        <button class="start-course-btn" data-course-id="${course.id}">
+                            <i class="fas fa-play-circle"></i> شروع رایگان دوره
+                        </button>
+                    `;
+                    
+                    categories[category].appendChild(courseCard);
+                });
+            }
+
+            // اضافه کردن رویداد کلیک به دکمه‌های شروع دوره
+            document.querySelectorAll('.start-course-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const courseId = this.getAttribute('data-course-id');
+                    showCourseDetail(courseId);
+                });
+            });
+        }
+
+        // نمایش صفحه جزئیات دوره
+        let currentCourseId = null;
+
+        function showCourseDetail(courseId) {
+            currentCourseId = courseId;
+            
+            // پیدا کردن دوره
+            let course = null;
+            for (const category in coursesData) {
+                const foundCourse = coursesData[category].find(c => c.id === courseId);
+                if (foundCourse) {
+                    course = foundCourse;
+                    break;
+                }
+            }
+            
+            if (!course) return;
+            
+            // پر کردن اطلاعات دوره
+            document.getElementById('detail-course-title').textContent = course.title;
+            document.getElementById('detail-course-description').textContent = course.description;
+            
+            // ایجاد سوالات متداول
+            const faqContent = document.getElementById('faq-content');
+            faqContent.innerHTML = '';
+            
+            if (course.faqs && course.faqs.length > 0) {
+                course.faqs.forEach(faq => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'faq-item';
+                    faqItem.innerHTML = `
+                        <div class="faq-question"><i class="fas fa-question"></i> ${faq.question}</div>
+                        <div class="faq-answer">${faq.answer}</div>
+                    `;
+                    faqContent.appendChild(faqItem);
+                });
+            } else {
+                // سوالات پیش‌فرض
+                const defaultFaqs = [
+                    {
+                        question: "این دوره برای چه کسانی مناسب است؟",
+                        answer: "این دوره برای همه افراد علاقه‌مند به یادگیری این مهارت طراحی شده است. از افراد کاملاً مبتدی تا کسانی که می‌خواهند دانش خود را به‌روز کنند."
+                    },
+                    {
+                        question: "پس از اتمام دوره چه مهارت‌هایی کسب می‌کنم؟",
+                        answer: "شما پس از اتمام این دوره مهارت‌های عملی و کاربردی را کسب خواهید کرد که می‌توانید بلافاصله در کار یا زندگی شخصی خود از آن‌ها استفاده کنید."
+                    },
+                    {
+                        question: "آیا این دوره گواهی پایان دارد؟",
+                        answer: "بله، پس از اتمام موفقیت‌آمیز دوره، گواهی معتبر پایان دوره برای شما صادر خواهد شد."
+                    }
+                ];
+                
+                defaultFaqs.forEach(faq => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'faq-item';
+                    faqItem.innerHTML = `
+                        <div class="faq-question"><i class="fas fa-question"></i> ${faq.question}</div>
+                        <div class="faq-answer">${faq.answer}</div>
+                    `;
+                    faqContent.appendChild(faqItem);
+                });
+            }
+            
+            // نمایش صفحه جزئیات دوره
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('course-detail-page').style.display = 'block';
+            document.getElementById('lessons-page').style.display = 'none';
+        }
+
+        // شروع درس‌های دوره
+        let currentLessonIndex = 0;
+        let currentCourse = null;
+
+        function startCourseLessons() {
+            // پیدا کردن دوره
+            for (const category in coursesData) {
+                const foundCourse = coursesData[category].find(c => c.id === currentCourseId);
+                if (foundCourse) {
+                    currentCourse = foundCourse;
+                    break;
+                }
+            }
+            
+            if (!currentCourse) return;
+            
+            // تنظیم درس اول
+            currentLessonIndex = 0;
+            displayLesson(currentLessonIndex);
+            
+            // نمایش صفحه درس‌ها
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('course-detail-page').style.display = 'none';
+            document.getElementById('lessons-page').style.display = 'block';
+        }
+
+        // نمایش درس
+        function displayLesson(lessonIndex) {
+            const lessonCounter = document.getElementById('lesson-counter');
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonContent = document.getElementById('lesson-content');
+            const lockMessage = document.getElementById('lock-message');
+            
+            // بررسی اگر درس سوم است (قفل شده)
+            if (lessonIndex >= 2) {
+                lessonCounter.textContent = "درس ۳ از ۳";
+                lessonTitle.textContent = "ادامه دوره";
+                lessonContent.innerHTML = "";
+                lockMessage.style.display = 'block';
+                document.getElementById('prev-lesson').style.display = 'block';
+                document.getElementById('next-lesson').style.display = 'none';
+                return;
+            } else {
+                lockMessage.style.display = 'none';
+                document.getElementById('next-lesson').style.display = 'block';
+            }
+            
+            // نمایش درس‌های رایگان
+            let lessonData;
+            
+            // اگر دوره درس‌های خاصی دارد
+            if (currentCourse.lessons && currentCourse.lessons.length > 0) {
+                if (lessonIndex < currentCourse.lessons.length) {
+                    lessonData = currentCourse.lessons[lessonIndex];
+                } else {
+                    lessonData = {
+                        title: `درس ${lessonIndex + 1}`,
+                        content: `<p>این درس بخشی از محتوای رایگان دوره است. برای دسترسی به تمامی درس‌ها، لطفاً دوره را خریداری کنید.</p>`
+                    };
+                }
+            } else {
+                // محتوای پیش‌فرض برای دوره‌هایی که محتوای خاصی ندارند
+                lessonData = {
+                    title: `درس ${lessonIndex + 1}: مقدمه`,
+                    content: `
+                        <h3>خوش آمدید به ${currentCourse.title}</h3>
+                        <p>به اولین درس از دوره ${currentCourse.title} خوش آمدید! ما در این مسیر همراه شما هستیم تا بهترین نتیجه را بگیرید.</p>
+                        
+                        <h3>چرا این دوره مهم است؟</h3>
+                        <p>یادگیری ${currentCourse.title.split('-')[1] || currentCourse.title} در دنیای امروز یک مهارت ضروری محسوب می‌شود. با تسلط بر این مهارت، فرصت‌های جدیدی در زندگی شخصی و حرفه‌ای شما ایجاد خواهد شد.</p>
+                        
+                        <h3>چه چیزهایی یاد خواهید گرفت؟</h3>
+                        <ul>
+                            <li>اصول پایه و مفاهیم اصلی</li>
+                            <li>تکنیک‌های کاربردی و عملی</li>
+                            <li>راه‌حل‌های چالش‌های رایج</li>
+                            <li>نکات طلایی برای تسلط سریع‌تر</li>
+                        </ul>
+                        
+                        <p>در درس بعدی، وارد جزئیات بیشتر خواهیم شد و با مفاهیم پایه‌ای این حوزه آشنا می‌شویم.</p>
+                    `
+                };
+                
+                if (lessonIndex === 1) {
+                    lessonData = {
+                        title: `درس ۲: مبانی و اصول`,
+                        content: `
+                            <h3>مبانی اصلی ${currentCourse.title.split('-')[1] || currentCourse.title}</h3>
+                            <p>در این درس با مهم‌ترین مفاهیم پایه‌ای آشنا می‌شوید که سنگ بنای یادگیری شما خواهد بود.</p>
+                            
+                            <h3>سه اصل مهم</h3>
+                            <ol>
+                                <li><strong>اصل اول: درک عمیق مفاهیم پایه</strong> - بدون تسلط بر پایه، نمی‌توانید به سطوح بالاتر بروید.</li>
+                                <li><strong>اصل دوم: تمرین مداوم</strong> - یادگیری واقعی تنها با تمرین اتفاق می‌افتد.</li>
+                                <li><strong>اصل سوم: پیاده‌سازی عملی</strong> - آنچه یاد می‌گیرید را بلافاصله در عمل پیاده کنید.</li>
+                            </ol>
+                            
+                            <h3>نکات طلایی برای یادگیری مؤثر</h3>
+                            <ul>
+                                <li>هر روز حتی اگر ۲۰ دقیقه، وقت بگذارید.</li>
+                                <li>یادداشت برداری کنید و نکات مهم را مرور نمایید.</li>
+                                <li>سوال بپرسید و در صورت نیاز از پشتیبانی کمک بگیرید.</li>
+                            </ul>
+                            
+                            <p>تبریک! شما دو درس اول را با موفقیت گذراندید. برای ادامه مسیر و دسترسی به درس‌های پیشرفته‌تر، لطفاً دوره را خریداری کنید.</p>
+                        `
+                    };
+                }
+            }
+            
+            // نمایش درس
+            lessonCounter.textContent = `درس ${lessonIndex + 1} از ۳`;
+            lessonTitle.textContent = lessonData.title;
+            lessonContent.innerHTML = lessonData.content;
+            
+            // تنظیم دکمه‌های ناوبری
+            if (lessonIndex === 0) {
+                document.getElementById('prev-lesson').style.display = 'none';
+            } else {
+                document.getElementById('prev-lesson').style.display = 'block';
+            }
+        }
+
+        // نمایش درس قبلی
+        function showPrevLesson() {
+            if (currentLessonIndex > 0) {
+                currentLessonIndex--;
+                displayLesson(currentLessonIndex);
+            }
+        }
+
+        // نمایش درس بعدی
+        function showNextLesson() {
+            if (currentLessonIndex < 2) {
+                currentLessonIndex++;
+                displayLesson(currentLessonIndex);
+            }
+        }
+
+        // نمایش صفحه اصلی
+        function showMainPage() {
+            document.getElementById('main-page').style.display = 'block';
+            document.getElementById('course-detail-page').style.display = 'none';
+            document.getElementById('lessons-page').style.display = 'none';
+        }
+
+        // نمایش صفحه جزئیات دوره
+        function showCourseDetailPage() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('course-detail-page').style.display = 'block';
+            document.getElementById('lessons-page').style.display = 'none';
+        }
+
+        // هدایت به واتس‌اپ برای خرید دوره
+        function redirectToWhatsApp() {
+            window.open('https://wa.me/+989302739289', '_blank');
+        }
+
+        // اضافه کردن رویداد کلیک به دکمه خرید در پیام قفل شده
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.purchase-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                redirectToWhatsApp();
+            });
+        });
+    </script>
+</body>
+</html>
